@@ -1,47 +1,43 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
-// Configuración de recarga automática en desarrollo
-require('electron-reload')(__dirname, {
-  electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-});
+// Detectar si estamos en modo desarrollo
+const isDev = process.env.NODE_ENV === 'development';
+
+if (isDev) {
+  require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
+    watch: path.join(__dirname, '../frontend/dist') // Monitorea los cambios en el frontend
+  });
+}
 
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      // Por seguridad, evita integrar Node.js en el contexto del frontend si no es necesario
-      nodeIntegration: false,
+      nodeIntegration: false, // Deshabilita integración con Node.js por seguridad
       contextIsolation: true
     }
   });
-  
-  // Durante desarrollo: carga el servidor de desarrollo del frontend (por ejemplo, Vite en localhost:3000)
-  // win.loadURL('http://localhost:3000');
 
-  // En producción: carga los archivos compilados del frontend
-    // win.loadFile(path.join(__dirname, '../frontend/index.html'));
-    win.loadURL('http://localhost:5173/');
+  if (isDev) {
+    // En desarrollo: Cargar Vite en caliente (localhost:5173)
+    win.loadURL('http://localhost:5173');
+  } else {
+    // En producción: Cargar el frontend compilado en la carpeta `dist`
+    win.loadFile(path.join(__dirname, '../frontend/dist/index.html'));
+  }
 }
-
-if (process.env.NODE_ENV === 'development') {
-  require('electron-reload')(__dirname, {
-    electron: require(`${__dirname}/node_modules/electron`)
-  });
-}
-
 
 app.whenReady().then(createWindow);
 
-// Cierra la aplicación en plataformas que no sean macOS cuando se cierren todas las ventanas
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-// En macOS, vuelve a crear una ventana cuando la app es activada y no hay ninguna abierta
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
