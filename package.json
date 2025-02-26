@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "frontend": "cd frontend && npm run dev",
+    "dev": "npx cross-env NODE_ENV=development concurrently \"npm run backend\" \"npm run frontend\" \"npm run electron\"",
     "backend": "cd backend && npm run dev",
-    "electron": "cd electron && npm start",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\" \"npm run electron\""
+    "frontend": "cd frontend && npm run dev",
+    "electron": "cd electron && npm start"
   },
   "repository": {
     "type": "git",
@@ -23,5 +22,8 @@
   "description": "",
   "dependencies": {
     "concurrently": "^9.1.2"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

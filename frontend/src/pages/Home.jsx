@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import reactLogo from '../assets/react.svg';
-// import viteLogo from '/vite.svg'
+import viteLogo from '../../public/vite.svg'
 import '../App.css';
 
 function Home() {  // 🔹 Cambia el nombre de App a Home
@@ -11,7 +12,7 @@ function Home() {  // 🔹 Cambia el nombre de App a Home
       <div>
         <a href="https://vite.dev" target="_blank">
           {/* ⚠️ Descomentar solo si viteLogo está importado correctamente */}
-          {/* <img src={viteLogo} className="logo" alt="Vite logo" /> */}
+          <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
@@ -29,6 +30,13 @@ function Home() {  // 🔹 Cambia el nombre de App a Home
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+        </ul>
+      </nav>
     </>
   );
 }

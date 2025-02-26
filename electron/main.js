@@ -4,6 +4,8 @@ const path = require('path');
 // Detectar si estamos en modo desarrollo
 const isDev = process.env.NODE_ENV === 'development';
 
+console.log(isDev + "ESTE ES LA PRUEBA") 
+
 if (isDev) {
   require('electron-reload')(__dirname, {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
