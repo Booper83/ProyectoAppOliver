@@ -15,8 +15,8 @@ if (isDev) {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1920,
+    height: 1080,
     webPreferences: {
       nodeIntegration: false, // Deshabilita integración con Node.js por seguridad
       contextIsolation: true
