@@ -20,29 +20,19 @@
   "build": {
     "appId": "com.miempresa.miapp",
     "productName": "MiApp",
-    "copyright": "Copyright © 2025",
     "directories": {
       "output": "dist"
     },
     "files": [
-      "**/*",
-      "!node_modules",
-      "!dist",
-      "!package-lock.json",
-      "!src",
-      "!README.md"
+      "main.js",
+      "preload.js",
+      "frontend/dist/**/*",
+      "node_modules/**/*",
+      "package.json"
     ],
     "win": {
       "target": "nsis",
       "icon": "icon.ico"
-    },
-    "mac": {
-      "target": "dmg",
-      "icon": "icon.icns"
-    },
-    "linux": {
-      "target": "AppImage",
-      "icon": "icon.png"
     }
   }
 }

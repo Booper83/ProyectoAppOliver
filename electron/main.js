@@ -1,34 +1,26 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
-// Detectar si estamos en modo desarrollo
-const isDev = process.env.NODE_ENV === 'development';
-
-console.log(isDev + "ESTE ES LA PRUEBA") 
-
-if (isDev) {
-  require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
-    watch: path.join(__dirname, '../frontend/dist') // Monitorea los cambios en el frontend
-  });
-}
+const isDev = !app.isPackaged;
 
 function createWindow() {
   const win = new BrowserWindow({
     width: 1920,
     height: 1080,
     webPreferences: {
-      nodeIntegration: false, // Deshabilita integración con Node.js por seguridad
-      contextIsolation: true
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: isDev
+        ? path.join(__dirname, 'preload.js') // En desarrollo
+        : path.join(app.getAppPath(), 'preload.js') // En producción
     }
   });
 
   if (isDev) {
-    // En desarrollo: Cargar Vite en caliente (localhost:5173)
     win.loadURL('http://localhost:5173');
   } else {
-    // En producción: Cargar el frontend compilado en la carpeta `dist`
-    win.loadFile(path.join(__dirname, '../frontend/dist/index.html'));
+    win.loadFile(path.join(app.getAppPath(), 'frontend', 'dist', 'index.html'))
+      .catch(err => console.error('Error al cargar el frontend en producción:', err));
   }
 }
 
@@ -45,3 +37,5 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+
